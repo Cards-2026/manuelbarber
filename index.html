@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tarjeta Digital Manuel Laurens</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --card-bg: #141418;
+            --panel-bg: #1e1e24;
+            --input-bg: #0f0f12;
+            --accent-gold: #d4af37;
+            --accent-gold-light: #f3e5ab;
+            --accent-gold-dark: #8c6d1f;
+            --gold-gradient: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa8c2c 100%);
+            --gold-gradient-3d: linear-gradient(180deg, #e6c253 0%, #c49a2c 100%);
+            --btn-dark-gradient: linear-gradient(180deg, #2a2a32 0%, #18181f 100%);
+            --text-main: #f0f0f5;
+            --text-muted: #9a9ab0;
+            --border-gold: rgba(212, 175, 55, 0.3);
+            --shadow-3d-dark: #070709;
+            --shadow-3d-gold: #685012;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1a1a24 0%, var(--bg-dark) 80%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 12px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 410px;
+            background-color: var(--card-bg);
+            border-radius: 28px;
+            padding: 28px 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-gold);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(39, 174, 96, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.35);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+        }
+
+        .status-badge:hover {
+            transform: scale(1.03);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #2ecc71;
+            animation: pulse 2s infinite;
+        }
+
+        /* Closed Red State Styling */
+        .status-badge.closed {
+            background: rgba(231, 76, 60, 0.18);
+            color: #ff4d4d;
+            border-color: rgba(231, 76, 60, 0.4);
+            box-shadow: 0 0 12px rgba(231, 76, 60, 0.25);
+        }
+
+        .status-badge.closed .status-dot {
+            background-color: #ff4d4d;
+            box-shadow: 0 0 8px #ff4d4d;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.25); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Profile Header */
+        .profile-frame {
+            position: relative;
+            width: 115px;
+            height: 115px;
+            margin: 0 auto 16px;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-gold);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .profile-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: var(--gold-gradient);
+            color: #000;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            border: 2px solid var(--card-bg);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        h2.role-title {
+            font-size: 0.95rem;
+            color: var(--accent-gold-light);
+            letter-spacing: 3px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        p.subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            font-weight: 500;
+        }
+
+        .btn-3d {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            background: var(--btn-dark-gradient);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 6px 0 var(--shadow-3d-dark), 0 10px 15px rgba(0,0,0,0.6);
+            transition: all 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            top: 0;
+            user-select: none;
+        }
+
+        .btn-3d:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-3d:active {
+            top: 5px;
+            box-shadow: 0 1px 0 var(--shadow-3d-dark), 0 4px 6px rgba(0,0,0,0.4);
+        }
+
+        .btn-gold {
+            background: var(--gold-gradient-3d);
+            color: #120f05;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 6px 0 var(--shadow-3d-gold), 0 10px 18px rgba(212, 175, 55, 0.35);
+        }
+
+        .btn-gold:active {
+            top: 5px;
+            box-shadow: 0 1px 0 var(--shadow-3d-gold), 0 4px 8px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-3d i {
+            font-size: 1.25rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .btn-whatsapp { color: #25D366; }
+        .btn-facebook { color: #1877F2; }
+        .btn-instagram { color: #E4405F; }
+        .btn-tiktok { color: #00f2fe; }
+        .btn-location { color: #FF5252; }
+
+        .panel {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin-bottom 0.3s ease, padding 0.3s ease;
+            background: var(--panel-bg);
+            border-radius: 14px;
+            margin-bottom: 0;
+            border: 1px solid transparent;
+            text-align: left;
+            font-size: 0.9rem;
+            padding: 0 16px;
+        }
+
+        .panel.active {
+            max-height: 550px;
+            opacity: 1;
+            margin-bottom: 16px;
+            padding: 18px 16px;
+            border-color: rgba(212, 175, 55, 0.25);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .panel-header {
+            color: var(--accent-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            margin-bottom: 14px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-info strong {
+            display: block;
+            color: var(--text-main);
+            font-size: 0.92rem;
+        }
+
+        .service-price {
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-size: 1.05rem;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Schedule Row */
+        .schedule-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.88rem;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.08);
+        }
+
+        .schedule-row span.days {
+            color: var(--text-muted);
+        }
+
+        .schedule-row span.hours {
+            color: var(--accent-gold-light);
+            font-weight: 600;
+        }
+
+        .qr-wrapper {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-box {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 16px;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            border: 2px solid var(--accent-gold);
+        }
+
+        .qr-box img {
+            width: 150px;
+            height: 150px;
+            display: block;
+        }
+
+        /* Modals and Toast */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            border-radius: 20px;
+            padding: 24px 20px;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 12px;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-text {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .modal-text ol {
+            padding-left: 18px;
+            margin-top: 8px;
+        }
+
+        .modal-text li {
+            margin-bottom: 6px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--gold-gradient);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-container">
+    <!-- Dynamic Status Badge linked to business schedule (Click to test toggle) -->
+    <div class="status-badge" id="statusBadge" onclick="toggleManualStatus()" title="Toca para probar abrir / cerrar">
+        <span class="status-dot"></span> <span id="statusText">Comprobando...</span>
+    </div>
+
+    <!-- Header / Profile Brand -->
+    <div class="profile-frame">
+        <img src="https://i.postimg.cc/RC3dM0Lr/M-BARBERO-Mesa-de-trabajo-1.png" alt="Manuel Laurens Logo" class="profile-img">
+        <div class="profile-badge">
+            <i class="fa-solid fa-crown"></i>
+        </div>
+    </div>
+    
+    <h1>Manuel Laurens</h1>
+    <h2 class="role-title">BARBERO</h2>
+    <p class="subtitle">Estilo • Tradición • Elegancia</p>
+
+    <!-- 1. Agendar Cita (CTA Principal) -->
+    <button class="btn-3d btn-gold" onclick="togglePanel('agenda-panel')">
+        <i class="fa-solid fa-calendar-check"></i> AGENDAR CITA EN LÍNEA
+    </button>
+    
+    <div id="agenda-panel" class="panel">
+        <div class="panel-header">
+            <i class="fa-solid fa-scissors"></i> Reserva tu Turno
+        </div>
+        <form id="appointmentForm" onsubmit="sendAppointment(event)">
+            <div class="form-group">
+                <label for="name">Nombre Completo</label>
+                <input type="text" id="name" required placeholder="Ej: Carlos Mendoza">
+            </div>
+            
+            <div class="form-group">
+                <label for="barber">Barbero de Preferencia</label>
+                <select id="barber">
+                    <option value="Manuel Laurens">Manuel Laurens</option>
+                    <option value="Cualquiera disponible">Cualquiera disponible</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Servicio</label>
+                <select id="service" required>
+                    <option value="Corte de Cabello ($20)">Corte de Cabello ($20)</option>
+                    <option value="Corte de Barba ($10)">Corte de Barba ($10)</option>
+                    <option value="Combo Corte y Barba ($25)">Combo Corte y Barba ($25)</option>
+                    <option value="Combo Premium ($40)">Combo Premium ($40)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date">Fecha</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Hora</label>
+                    <select id="time" required>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="10:30 AM">10:30 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="11:30 AM">11:30 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="12:30 PM">12:30 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="1:30 PM">1:30 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="2:30 PM">2:30 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="3:30 PM">3:30 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="4:30 PM">4:30 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                        <option value="5:30 PM">5:30 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
+                        <option value="6:30 PM">6:30 PM</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-3d btn-gold" style="margin-top: 8px; margin-bottom: 0;">
+                <i class="fa-brands fa-whatsapp"></i> CONFIRMAR CITA POR WHATSAPP
+            </button>
+        </form>
+    </div>
+
+    <!-- 2. Servicios y Precios -->
+    <button class="btn-3d" onclick="togglePanel('servicios-panel')">
+        <i class="fa-solid fa-scissors" style="color: var(--accent-gold);"></i> SERVICIOS Y PRECIOS
+    </button>
+    <div id="servicios-panel" class="panel">
+        <div class="panel-header">
+            <i class="fa-solid fa-list-check"></i> Menú de Corte & Estilo
+        </div>
+        
+        <div class="service-item">
+            <div class="service-info">
+                <strong>Corte de Cabello</strong>
+            </div>
+            <div class="service-price">$20</div>
+        </div>
+
+        <div class="service-item">
+            <div class="service-info">
+                <strong>Corte de Barba</strong>
+            </div>
+            <div class="service-price">$10</div>
+        </div>
+
+        <div class="service-item">
+            <div class="service-info">
+                <strong>Combo Corte y Barba</strong>
+            </div>
+            <div class="service-price">$25</div>
+        </div>
+
+        <div class="service-item">
+            <div class="service-info">
+                <strong>Combo Premium</strong>
+            </div>
+            <div class="service-price">$40</div>
+        </div>
+    </div>
+
+    <!-- 3. Horario de Atención -->
+    <button class="btn-3d" onclick="togglePanel('horario-panel')">
+        <i class="fa-solid fa-clock" style="color: var(--accent-gold);"></i> HORARIO DE ATENCIÓN
+    </button>
+    <div id="horario-panel" class="panel">
+        <div class="panel-header">
+            <i class="fa-regular fa-calendar-days"></i> Horas de Servicio
+        </div>
+        
+        <div class="schedule-row">
+            <span class="days">Lunes a Viernes</span>
+            <span class="hours">10:00 AM - 7:00 PM</span>
+        </div>
+        <div class="schedule-row">
+            <span class="days">Sábados</span>
+            <span class="hours">10:00 AM - 7:00 PM</span>
+        </div>
+        <div class="schedule-row">
+            <span class="days">Domingos</span>
+            <span class="hours">Previa Reserva</span>
+        </div>
+        <div class="schedule-row" style="border:none;">
+            <span class="days" style="color: var(--accent-gold);">Festivos</span>
+            <span class="hours">Previa Reserva</span>
+        </div>
+    </div>
+
+    <!-- 4. Ubicación en Maps -->
+    <a href="https://www.google.com/maps/place/Maison+Prestige/@5.0682906,-75.5144057,17z/data=!4m11!1m3!2m2!1sbarberia+maison+prestige!6e1!3m6!1s0x8e476f004445a981:0xf1f54f489946fee5!8m2!3d5.0682619!4d-75.5144589!15sChhiYXJiZXJpYSBtYWlzb24gcHJlc3RpZ2WSAQxiZWF1dHlfc2Fsb27gAQA!16s%2Fg%2F11z1tdcjc_?entry=ttu&g_ep=EgoyMDI2MDkyNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="btn-3d">
+        <i class="fa-solid fa-location-dot btn-location"></i> CÓMO LLEGAR (MAPS)
+    </a>
+
+    <!-- 5. WhatsApp Directo -->
+    <a href="https://wa.link/h708t4" target="_blank" rel="noopener" class="btn-3d">
+        <i class="fa-brands fa-whatsapp btn-whatsapp"></i> CHAT DIRECTO WHATSAPP
+    </a>
+
+    <!-- 6. Instagram -->
+    <a href="https://www.instagram.com/barberomanny/" target="_blank" rel="noopener" class="btn-3d">
+        <i class="fa-brands fa-instagram btn-instagram"></i> INSTAGRAM
+    </a>
+
+    <!-- 7. Facebook -->
+    <a href="https://www.facebook.com/mannylaurens" target="_blank" rel="noopener" class="btn-3d">
+        <i class="fa-brands fa-facebook btn-facebook"></i> FACEBOOK
+    </a>
+
+    <!-- 8. TikTok -->
+    <a href="https://www.tiktok.com/@barberomanny" target="_blank" rel="noopener" class="btn-3d">
+        <i class="fa-brands fa-tiktok btn-tiktok"></i> TIKTOK
+    </a>
+
+    <!-- 9. Código QR -->
+    <button class="btn-3d" onclick="togglePanel('qr-panel')">
+        <i class="fa-solid fa-qrcode" style="color: var(--accent-gold);"></i> MI CÓDIGO QR
+    </button>
+    <div id="qr-panel" class="panel">
+        <div class="panel-header">
+            <i class="fa-solid fa-mobile-screen-button"></i> Escanea & Comparte
+        </div>
+        <div class="qr-wrapper">
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://elbaronbarberia.com" alt="Código QR Manuel Laurens">
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">
+                Apunta con la cámara de tu celular para abrir o compartir esta tarjeta digital.
+            </p>
+            <button class="btn-3d" style="padding: 8px 14px; font-size: 0.8rem; margin-bottom: 0;" onclick="copyCardLink()">
+                <i class="fa-solid fa-copy"></i> COPIAR ENLACE
+            </button>
+        </div>
+    </div>
+
+    <!-- 10. Instalar Tarjeta -->
+    <button class="btn-3d" onclick="openInstallModal()">
+        <i class="fa-solid fa-download" style="color: #00bcd4;"></i> INSTALAR EN TU CELULAR
+    </button>
+
+    <footer>
+        © 2026 Barbero Manuel Laurens • Tarjeta Digital
+    </footer>
+</div>
+
+<!-- Custom Modal Popup -->
+<div id="installModal" class="modal-overlay" onclick="closeInstallModal(event)">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <i class="fa-solid fa-mobile-notch"></i>
+        </div>
+        <div class="modal-title">Instalar Tarjeta Digital</div>
+        <div class="modal-text">
+            Guarda esta tarjeta en tu pantalla de inicio para acceder rápidamente:
+            <ol>
+                <li><strong>En Android (Chrome):</strong> Toca los tres puntos (⋮) arriba a la derecha y selecciona <i>"Agregar a la pantalla principal"</i>.</li>
+                <li><strong>En iPhone (Safari):</strong> Toca el botón Compartir (<i class="fa-solid fa-arrow-up-from-bracket"></i>) y selecciona <i>"Agregar a inicio"</i>.</li>
+            </ol>
+        </div>
+        <button class="btn-3d btn-gold" style="margin-bottom: 0;" onclick="closeInstallModal(null, true)">
+            ENTENDIDO
+        </button>
+    </div>
+</div>
+
+<!-- Toast notification container -->
+<div id="toast" class="toast">
+    <i class="fa-solid fa-check-circle"></i> <span id="toastMessage">¡Enlace copiado!</span>
+</div>
+
+<script>
+    let isManualOverride = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        // Set minimum date selector to today
+        const dateInput = document.getElementById('date');
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+            dateInput.value = today;
+        }
+
+        // Initialize business schedule evaluation
+        checkBusinessHours();
+        // Check every minute automatically
+        setInterval(checkBusinessHours, 60000);
+    });
+
+    /**
+     * Checks local device time against operating schedule:
+     * - Lunes a Sábado: 10:00 AM (600 min) - 7:00 PM (1140 min) -> ABIERTO
+     * - Fuera de este rango o Domingo -> CERRADO
+     */
+    function checkBusinessHours() {
+        if (isManualOverride) return;
+
+        const now = new Date();
+        const day = now.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+        const minutesOfDay = now.getHours() * 60 + now.getMinutes();
+
+        const openTime = 10 * 60;  // 10:00 AM -> 600 minutos
+        const closeTime = 19 * 60; // 07:00 PM -> 1140 minutos
+
+        // Abierto de Lunes (1) a Sábado (6) entre 10:00 AM y 7:00 PM
+        const isOpen = (day >= 1 && day <= 6) && (minutesOfDay >= openTime && minutesOfDay < closeTime);
+        
+        applyStatusState(isOpen);
+    }
+
+    function applyStatusState(isOpen) {
+        const badge = document.getElementById('statusBadge');
+        const statusText = document.getElementById('statusText');
+        if (!badge || !statusText) return;
+
+        if (isOpen) {
+            badge.classList.remove('closed');
+            statusText.textContent = 'ABIERTO AHORA';
+        } else {
+            badge.classList.add('closed');
+            statusText.textContent = 'CERRADO AHORA';
+        }
+    }
+
+    /**
+     * Allows clicking the badge to manually switch between ABIERTO AHORA and CERRADO AHORA for testing.
+     */
+    function toggleManualStatus() {
+        isManualOverride = true;
+        const badge = document.getElementById('statusBadge');
+        const isClosedNow = badge.classList.contains('closed');
+        
+        applyStatusState(isClosedNow); // Invert current state
+        showToast(isClosedNow ? 'Prueba: Estado cambiado a ABIERTO' : 'Prueba: Estado cambiado a CERRADO');
+    }
+
+    function togglePanel(panelId) {
+        if (navigator.vibrate) {
+            navigator.vibrate(12);
+        }
+
+        const targetPanel = document.getElementById(panelId);
+        const isOpen = targetPanel.classList.contains('active');
+
+        document.querySelectorAll('.panel').forEach(panel => {
+            panel.classList.remove('active');
+        });
+
+        if (!isOpen) {
+            targetPanel.classList.add('active');
+        }
+    }
+
+    function sendAppointment(event) {
+        event.preventDefault();
+
+        if (navigator.vibrate) {
+            navigator.vibrate([15, 30, 15]);
+        }
+
+        const phone = "573118883913";
+        const name = document.getElementById('name').value.trim();
+        const barber = document.getElementById('barber').value;
+        const service = document.getElementById('service').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+
+        let formattedDate = date;
+        try {
+            const parts = date.split('-');
+            const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+            formattedDate = dateObj.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        } catch (e) {
+            formattedDate = date;
+        }
+
+        const message = `*¡HOLA! QUISIERA AGENDAR UNA CITA* 💈%0A%0A` +
+                        `👤 *Cliente:* ${encodeURIComponent(name)}%0A` +
+                        `💈 *Barbero:* ${encodeURIComponent(barber)}%0A` +
+                        `✂️ *Servicio:* ${encodeURIComponent(service)}%0A` +
+                        `📅 *Fecha:* ${encodeURIComponent(formattedDate)}%0A` +
+                        `⏰ *Hora:* ${encodeURIComponent(time)}%0A%0A` +
+                        `_Enviado desde la Tarjeta Digital_`;
+
+        window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        showToast('¡Redirigiendo a WhatsApp!');
+    }
+
+    function openInstallModal() {
+        if (navigator.vibrate) {
+            navigator.vibrate(10);
+        }
+        document.getElementById('installModal').classList.add('open');
+    }
+
+    function closeInstallModal(event, forceClose = false) {
+        if (forceClose || (event && event.target.id === 'installModal')) {
+            document.getElementById('installModal').classList.remove('open');
+        }
+    }
+
+    function copyCardLink() {
+        const dummy = document.createElement('input');
+        const text = window.location.href;
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        
+        try {
+            document.execCommand('copy');
+            showToast('¡Enlace copiado al portapapeles!');
+        } catch (err) {
+            showToast('No se pudo copiar automáticamente');
+        }
+        document.body.removeChild(dummy);
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        toastMessage.textContent = msg;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
